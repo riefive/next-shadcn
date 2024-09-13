@@ -1,12 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import useAuthStore from "@/hooks/use-auth";
+import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import useAuthStore from "@/lib/use-auth";
-import { toast } from "@/hooks/use-toast";
-import { useEffect, useState } from "react";
 
 export default function Home() {
+  const router = useRouter();
   const { isLoggedIn, setup, login, logout } = useAuthStore();
   const [username, setUsername] = useState("123456789");
 
@@ -15,7 +17,7 @@ export default function Home() {
       toast({
         title: "Error",
         description: "Username is empty",
-      })
+      });
       return;
     }
     setup(username);
@@ -49,9 +51,14 @@ export default function Home() {
                 Login
               </Button>
             ) : (
-              <Button className="w-[150px]" onClick={handleLogout}>
-                Logout
-              </Button>
+              <>
+                <Button variant="outline" className="w-[150px]" onClick={() => router.push("/private")}>
+                  Private Page
+                </Button>
+                <Button className="w-[150px]" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </>
             )}
           </div>
         </div>
